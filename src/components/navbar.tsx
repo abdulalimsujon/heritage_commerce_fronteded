@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import { TwitterIcon, SearchIcon, Logo } from "@/src/components/icons";
+import CartBadge from "./badge";
 
 export const Navbar = () => {
   const searchInput = (
@@ -49,7 +50,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  "data-[active=true]:text-primary data-[active=true]:font-medium"
                 )}
                 color="foreground"
                 href={item.href}
@@ -71,12 +72,12 @@ export const Navbar = () => {
             <NextLink
               className={clsx(
                 linkStyles({ color: "foreground" }),
-                "data-[active=true]:text-primary data-[active=true]:font-medium",
+                "data-[active=true]:text-primary data-[active=true]:font-medium"
               )}
               color="foreground"
-              href="/cart"
+              href="/checkout"
             >
-              Cart
+              <CartBadge />
             </NextLink>
           </NavbarItem>
           <ThemeSwitch />

@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type Tcart = {
+export type Tcart = {
   id: string;
   quantity: number;
+  name?: string;
+  price: string;
 };
 
 type initialStateProps = {
@@ -19,7 +21,7 @@ const cartSlice = createSlice({
   reducers: {
     addTocart: (state, action) => {
       const existingProductIndex = state.cart.findIndex(
-        (product) => product.id === action.payload.id,
+        (product) => product.id === action.payload.id
       );
 
       if (existingProductIndex !== -1) {
@@ -30,7 +32,7 @@ const cartSlice = createSlice({
     },
     decreaseToCart: (state, action) => {
       const existingProductIndex = state.cart.findIndex(
-        (product) => product.id === action.payload.id,
+        (product) => product.id === action.payload.id
       );
 
       if (existingProductIndex !== -1) {
@@ -40,14 +42,14 @@ const cartSlice = createSlice({
           existingProduct.quantity -= 1;
         } else {
           state.cart = state.cart.filter(
-            (item) => item.id !== action.payload.id,
+            (item) => item.id !== action.payload.id
           );
         }
       }
     },
     increaseToCart: (state, action) => {
       const existingProductIndex = state.cart.findIndex(
-        (product) => product.id === action.payload.id,
+        (product) => product.id === action.payload.id
       );
 
       if (existingProductIndex !== -1) {

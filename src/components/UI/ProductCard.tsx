@@ -1,12 +1,16 @@
+"use client";
+
 import { Card } from "@nextui-org/card";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { Image } from "@nextui-org/react";
+import { Button, Image } from "@nextui-org/react";
 
 import { Tproduct } from "../../types";
 import ProductRatingGenerator from "../ProductRatingGenerator";
+import { useRouter } from "next/navigation";
 
 const ProductCard = ({ product }: { product: Tproduct }) => {
-  const { name, image, price, rating } = product;
+  const { name, image, price, rating, _id } = product;
+  const router = useRouter();
 
   return (
     <Card className="py-4 max-w-xs bg-slate-50">
@@ -30,7 +34,12 @@ const ProductCard = ({ product }: { product: Tproduct }) => {
         <h4 className="text-default-500 flex p-1">
           <MdOutlineAttachMoney size={20} /> {price}
         </h4>
-        <h1 className="text-center">Show Details</h1>
+        <Button
+          onClick={() => router.push(`/singleProduct/${_id}`)}
+          className="text-center"
+        >
+          Show Details
+        </Button>
       </div>
     </Card>
   );
