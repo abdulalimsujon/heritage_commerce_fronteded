@@ -16,6 +16,10 @@ const ShowSearchProduct = () => {
   const brand = useSelector((state: RootState) => state.filters.brand);
   const price = useSelector((state: RootState) => state.filters.price);
   const rating = useSelector((state: RootState) => state.filters.rating);
+  const searchTerm = useSelector(
+    (state: RootState) => state.filters.searchTerm
+  );
+
   const limit = useSelector((state: RootState) => state.filters.limit);
   const sort = useSelector((state: RootState) => state.filters.sort);
   const page = useSelector((state: RootState) => state.filters.page);
@@ -29,6 +33,7 @@ const ShowSearchProduct = () => {
     rating,
     sort,
     page,
+    searchTerm,
     limit,
   });
   const totalPages = data?.data?.meta?.totalPage;
@@ -119,13 +124,13 @@ const ShowSearchProduct = () => {
           Previous
         </button>
 
-        <p className="bg-red-300 px-4 py-2 rounded">{page}</p>
+        <p className=" px-4 py-2 rounded">{page}</p>
 
         <button
           className={`${
             page === totalPages || totalProducts === 0
               ? "bg-gray-200 cursor-not-allowed"
-              : "bg-primary hover:bg-blue-400"
+              : " bg-blue-300"
           } px-4 py-2 rounded`}
           disabled={page === totalPages} // Disable "Next" button on last page
           onClick={() => handlePageChange(page + 1)}

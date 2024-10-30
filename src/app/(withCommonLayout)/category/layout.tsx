@@ -6,7 +6,7 @@ const layout = ({
   children: ReactNode;
   recentPosts: ReactNode;
 }) => {
-  return <div className="bg-red-500">{children}</div>;
+  return <div>{children}</div>;
 };
 
 export default layout;

@@ -19,23 +19,10 @@ import Dropdown from "./Dropdown";
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import { TwitterIcon, SearchIcon, Logo } from "@/src/components/icons";
+import NavbarInputSearch from "./NavbarInputSearch";
 
 export const Navbar = () => {
-  const searchInput = (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      labelPlacement="outside"
-      placeholder="Search your product"
-      startContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-      type="search"
-    />
-  );
+  const searchInput = <NavbarInputSearch />;
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">

@@ -5,7 +5,7 @@ import { CiTwitter } from "react-icons/ci";
 
 const FooterInput = () => {
   return (
-    <div>
+    <div className="dark:text-gray-700">
       <input
         className="p-2 my-2 rounded-md"
         type="text "
