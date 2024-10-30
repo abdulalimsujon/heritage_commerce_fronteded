@@ -10,7 +10,7 @@ export const SingleProductById = async (id: string) => {
   };
 
   const res = await fetch(
-    `${envConfig.baseApi}/getSingleProduct/${id}`,
+    `${envConfig.baseApi}/products/getSingleProduct/${id}`,
     fetchOptions
   );
 

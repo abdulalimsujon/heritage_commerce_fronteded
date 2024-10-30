@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 "use client";
 
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "@/src/redux/store";
 import { useRouter } from "next/navigation";
+
+import { RootState } from "@/src/redux/store";
 
 const CheckoutPage = () => {
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -26,6 +28,7 @@ const CheckoutPage = () => {
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -96,13 +99,13 @@ const CheckoutPage = () => {
                 Full Name
               </label>
               <input
-                type="text"
+                required
+                className="w-full mt-1 p-2 border border-gray-300 rounded"
                 name="fullName"
+                placeholder="John Doe"
+                type="text"
                 value={formData.fullName}
                 onChange={handleChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-                placeholder="John Doe"
-                required
               />
             </div>
             <div>
@@ -110,13 +113,13 @@ const CheckoutPage = () => {
                 Email Address
               </label>
               <input
-                type="email"
+                required
+                className="w-full mt-1 p-2 border border-gray-300 rounded"
                 name="email"
+                placeholder="john@example.com"
+                type="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-                placeholder="john@example.com"
-                required
               />
             </div>
           </div>
@@ -125,13 +128,13 @@ const CheckoutPage = () => {
               Phone Number
             </label>
             <input
-              type="tel"
+              required
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="phone"
+              placeholder="123-456-7890"
+              type="tel"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              placeholder="123-456-7890"
-              required
             />
           </div>
           <div>
@@ -139,13 +142,13 @@ const CheckoutPage = () => {
               Shipping Address
             </label>
             <input
-              type="text"
+              required
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="shippingAddress"
+              placeholder="123 Main St, City, Country"
+              type="text"
               value={formData.shippingAddress}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              placeholder="123 Main St, City, Country"
-              required
             />
           </div>
           <div>
@@ -153,19 +156,19 @@ const CheckoutPage = () => {
               Billing Address
             </label>
             <input
-              type="text"
+              required
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="billingAddress"
+              placeholder="123 Main St, City, Country"
+              type="text"
               value={formData.billingAddress}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              placeholder="123 Main St, City, Country"
-              required
             />
           </div>
           <div className="text-right">
             <button
-              type="submit"
               className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-medium"
+              type="submit"
             >
               Proceed to Payment
             </button>

@@ -1,16 +1,12 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Heriage Market",
+  name: "Heritage Market",
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
     {
       label: "Home",
       href: "/",
-    },
-    {
-      label: "Product",
-      href: "/products",
     },
 
     {
@@ -22,10 +18,6 @@ export const siteConfig = {
     {
       label: "Home",
       href: "/",
-    },
-    {
-      label: "Product",
-      href: "/product",
     },
 
     {

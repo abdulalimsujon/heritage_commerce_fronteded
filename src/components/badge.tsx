@@ -3,6 +3,7 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Badge } from "@nextui-org/badge";
 import { useSelector } from "react-redux";
+
 import { RootState } from "../redux/store";
 
 const CartBadge = () => {
@@ -10,7 +11,7 @@ const CartBadge = () => {
 
   return (
     <div>
-      <Badge content={cart.length} color="danger" placement="top-right">
+      <Badge color="danger" content={cart.length} placement="top-right">
         <AiOutlineShoppingCart size={25} />
       </Badge>
     </div>

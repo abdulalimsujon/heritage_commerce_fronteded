@@ -16,8 +16,6 @@ const productApi = baseApi.injectEndpoints({
         // Create a new URLSearchParams object
         const params = new URLSearchParams();
 
-        console.log("inside the api", page, limit);
-
         if (category) {
           params.append("category", category);
         }
@@ -44,7 +42,7 @@ const productApi = baseApi.injectEndpoints({
         }
 
         return {
-          url: `/get-products?${params.toString()}`, // Construct the URL with the query string
+          url: `/products/get-products?${params.toString()}`, // Construct the URL with the query string
           method: "GET",
         };
       },
@@ -52,9 +50,18 @@ const productApi = baseApi.injectEndpoints({
     createProduct: builder.mutation({
       query: (data) => {
         return {
-          url: "/create-product",
+          url: "/products/create-product",
           method: "POST",
           body: data,
+        };
+      },
+    }),
+
+    allProductFromDb: builder.query({
+      query: () => {
+        return {
+          url: "/products/getAllProduct",
+          method: "GET",
         };
       },
     }),
@@ -74,7 +81,22 @@ const productApi = baseApi.injectEndpoints({
         };
       },
     }),
+    updateProduct: builder.mutation({
+      query: ({ formData, id }) => {
+        // Destructure formData and id from a single object
+        return {
+          url: `/update-product/${id}`,
+          method: "PATCH",
+          body: formData,
+        };
+      },
+    }),
   }),
 });
 
-export const { useAllProductQuery } = productApi;
+export const {
+  useAllProductQuery,
+  useAllProductFromDbQuery,
+  useUpdateProductMutation,
+  useCreateProductMutation,
+} = productApi;

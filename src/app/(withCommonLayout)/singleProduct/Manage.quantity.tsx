@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { IoMdAdd } from "react-icons/io";
 import { FaMinus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+
 import {
   decreaseToCart,
   increaseToCart,
   Tcart,
 } from "@/src/redux/features/CartSlice";
 import { RootState } from "@/src/redux/store";
-import { useRouter } from "next/navigation";
 
 const ManageQuantity = ({ id }: { id: string }) => {
   const dispatch = useDispatch();
@@ -89,8 +90,8 @@ const ManageQuantity = ({ id }: { id: string }) => {
       {/* Checkout Button */}
       <div className="text-center">
         <button
-          onClick={handleCheckOut}
           className="px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600"
+          onClick={handleCheckOut}
         >
           Checkout
         </button>

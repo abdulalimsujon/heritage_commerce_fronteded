@@ -1,6 +1,6 @@
-import AllProduct from "@/src/components/modules/home/AllProduct";
-import HomeSlider from "@/src/components/modules/home/HomeSlider";
 import Category from "./category/page";
+
+import HomeSlider from "@/src/components/modules/home/HomeSlider";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
         <HomeSlider />
       </div>
 
-      <Category></Category>
+      <Category />
     </div>
   );
 }

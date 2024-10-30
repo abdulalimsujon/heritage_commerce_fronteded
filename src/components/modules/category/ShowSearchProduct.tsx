@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 import ProductCard from "../../UI/ProductCard";
+
 import { useAllProductQuery } from "@/src/redux/api/product/productApi";
 import { RootState } from "@/src/redux/store";
 import { Tproduct } from "@/src/types";
@@ -19,7 +20,7 @@ const ShowSearchProduct = () => {
   const sort = useSelector((state: RootState) => state.filters.sort);
   const page = useSelector((state: RootState) => state.filters.page);
 
-  const [list, setList] = useState(3);
+  const [list, setList] = useState(4);
 
   const { data, isLoading, refetch } = useAllProductQuery({
     category,
@@ -53,7 +54,7 @@ const ShowSearchProduct = () => {
   return (
     <div className="w-full">
       <div className="w-full">
-        <div className="ml-4 flex justify-between">
+        <div className="ml-4 flex justify-between ">
           <div>
             <label className="mr-2 text-xl" htmlFor="limit">
               Items per page:
@@ -73,18 +74,18 @@ const ShowSearchProduct = () => {
           <div className="flex">
             <div
               className="p-2 ml-2 cursor-pointer"
-              onClick={() => setList(3)}
               role="button"
               tabIndex={0}
+              onClick={() => setList(3)}
               onKeyDown={(e) => e.key === "Enter" && setList(3)}
             >
               <h1>lll</h1>
             </div>
             <div
               className="p-2 cursor-pointer"
-              onClick={() => setList(4)}
               role="button"
               tabIndex={0}
+              onClick={() => setList(4)}
               onKeyDown={(e) => e.key === "Enter" && setList(4)}
             >
               <h1>llll</h1>
@@ -93,13 +94,13 @@ const ShowSearchProduct = () => {
         </div>
       </div>
       <div
-        className={`container mx-auto grid gap-2 ${
+        className={`container mx-auto grid gap-2  ${
           list === 3
             ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
             : list === 4
               ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-4"
               : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
-        }`}
+        } ${list === 1 ? "flex justify-center" : ""}`} // Center items when grid-cols-1
       >
         {data?.data?.result?.map((product: Tproduct) => (
           <ProductCard key={product._id} product={product} />
@@ -124,7 +125,7 @@ const ShowSearchProduct = () => {
           className={`${
             page === totalPages || totalProducts === 0
               ? "bg-gray-200 cursor-not-allowed"
-              : "bg-amber-400 hover:bg-amber-500"
+              : "bg-primary hover:bg-blue-400"
           } px-4 py-2 rounded`}
           disabled={page === totalPages} // Disable "Next" button on last page
           onClick={() => handlePageChange(page + 1)}

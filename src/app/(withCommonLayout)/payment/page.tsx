@@ -1,7 +1,10 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable prettier/prettier */
 "use client";
 
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+
 import { RootState } from "@/src/redux/store";
 
 const PaymentPage = () => {
@@ -9,7 +12,7 @@ const PaymentPage = () => {
 
   // Calculate total price for all products in the cart
   const grandTotalPrice = cart?.reduce((total, cartItem) => {
-    return total + cartItem.price * cartItem.quantity;
+    return total + (cartItem.price as number) * (cartItem.quantity as number);
   }, 0);
 
   // State for payment form inputs
@@ -23,6 +26,7 @@ const PaymentPage = () => {
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setPaymentData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -89,13 +93,13 @@ const PaymentPage = () => {
               Card Number
             </label>
             <input
-              type="text"
+              required
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="cardNumber"
+              placeholder="1234 5678 9012 3456"
+              type="text"
               value={paymentData.cardNumber}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              placeholder="1234 5678 9012 3456"
-              required
             />
           </div>
           <div>
@@ -103,13 +107,13 @@ const PaymentPage = () => {
               Card Holder Name
             </label>
             <input
-              type="text"
+              required
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="cardHolder"
+              placeholder="John Doe"
+              type="text"
               value={paymentData.cardHolder}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              placeholder="John Doe"
-              required
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -118,32 +122,32 @@ const PaymentPage = () => {
                 Expiry Date
               </label>
               <input
-                type="text"
+                required
+                className="w-full mt-1 p-2 border border-gray-300 rounded"
                 name="expiryDate"
+                placeholder="MM/YY"
+                type="text"
                 value={paymentData.expiryDate}
                 onChange={handleChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-                placeholder="MM/YY"
-                required
               />
             </div>
             <div>
               <label className="block font-medium text-gray-700">CVV</label>
               <input
-                type="text"
+                required
+                className="w-full mt-1 p-2 border border-gray-300 rounded"
                 name="cvv"
+                placeholder="123"
+                type="text"
                 value={paymentData.cvv}
                 onChange={handleChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-                placeholder="123"
-                required
               />
             </div>
           </div>
           <div className="text-right">
             <button
-              type="submit"
               className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-medium"
+              type="submit"
             >
               Complete Payment
             </button>

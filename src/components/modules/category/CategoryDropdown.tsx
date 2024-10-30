@@ -3,6 +3,7 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
 import { Slider } from "@nextui-org/slider";
 import { useDispatch } from "react-redux";
+
 import {
   clearAllFilters,
   setBrand,
@@ -53,8 +54,8 @@ const CategoryDropdown = () => {
           <Select
             className="w-full"
             label="Select category"
-            variant="bordered"
             placeholder="Select a category"
+            variant="bordered"
             onChange={(e) => handleCategoryChange(e.target.value)}
           >
             {categories.map((category) => (
@@ -73,8 +74,8 @@ const CategoryDropdown = () => {
           <Select
             className="w-full"
             label="Select brand"
-            variant="bordered"
             placeholder="Select a brand"
+            variant="bordered"
             onChange={(e) => handleBrandChange(e.target.value)}
           >
             {brands.map((brand) => (

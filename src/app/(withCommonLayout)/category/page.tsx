@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
+
 import CategoryDropdown from "@/src/components/modules/category/CategoryDropdown";
 import ShowSearchProduct from "@/src/components/modules/category/ShowSearchProduct";
 
@@ -25,7 +26,7 @@ const Category = () => {
           className="flex items-center p-2 bg-gray-300 text-white rounded shadow"
           onClick={toggleDrawer}
         >
-          <GiHamburgerMenu size={20} className="m-2" />
+          <GiHamburgerMenu className="m-2" size={20} />
         </button>
       </div>
 
