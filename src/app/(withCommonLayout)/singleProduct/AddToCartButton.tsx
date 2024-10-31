@@ -20,14 +20,16 @@ const AddToCartButton = ({ data }: { data: Tproduct }) => {
         price: data.price,
         name: data.name,
         quantity: data.stock_quantity,
-      }),
+      })
     );
     router.push(`/cart/${id}`);
   };
 
   return (
-    <div className="py-2">
-      <Button onClick={handleClick}>Add to Cart</Button>
+    <div className="py-2 ">
+      <Button className="bg-green-500" onClick={handleClick}>
+        Add to Cart
+      </Button>
     </div>
   );
 };

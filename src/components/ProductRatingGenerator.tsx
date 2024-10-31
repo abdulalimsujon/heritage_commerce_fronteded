@@ -19,11 +19,7 @@ const ProductRatingGenerator = ({ stars }: { stars: number }) => {
     );
   });
 
-  return (
-    <wrapper>
-      <div className="flex gap-1 text-amber-500">{ratingStars}</div>
-    </wrapper>
-  );
+  return <div className="flex gap-1 text-amber-500">{ratingStars}</div>;
 };
 
 export default ProductRatingGenerator;

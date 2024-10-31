@@ -1,6 +1,7 @@
 import Image from "next/image";
 import AddToCartButton from "../AddToCartButton";
 import { SingleProductById } from "@/src/services/singleProduct";
+import ProductRatingGenerator from "@/src/components/ProductRatingGenerator";
 
 interface IProps {
   params: {
@@ -19,40 +20,45 @@ const SingleProduct = async ({ params: { id } }: IProps) => {
     stock_quantity,
     price,
     image,
+    rating,
     _id,
   } = data;
 
   return (
-    <div className="flex justify-center">
-      <div className="ml-20 max-w-xl border border-gray-300 rounded-lg shadow-md p-6 bg-white ">
-        <div className="flex flex-col md:flex-row">
-          <div className="relative md:w-1/2 mb-4 md:mb-0">
-            <Image
-              alt={name}
-              className="w-full h-48 object-cover rounded-md"
-              height={300} // Adjust height as needed
-              src={image}
-              width={400} // Adjust width as needed
-            />
-          </div>
-          <div className="md:w-1/2 md:pl-6">
-            <h2 className="text-2xl font-bold text-gray-800">{name}</h2>
-            <p className="text-gray-600 mt-2">{description}</p>
-            <p className="text-gray-600 mt-2">
-              <strong>Category:</strong> {category}
-            </p>
-            <p className="text-gray-600 mt-1">
-              <strong>Brand:</strong> {brand}
-            </p>
-            <p className="text-gray-600 mt-1">
-              <strong>Stock Quantity:</strong> {stock_quantity}
-            </p>
-            <p className="text-gray-800 font-bold mt-2 text-lg">
-              Price: ${price.toFixed(2)}
-            </p>
-            <div className="mt-4">
-              <AddToCartButton data={data} />
-            </div>
+    <div className="bg-blue-50 dark:bg-gray-800 mx-80">
+      <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center p-10 object-cover">
+          <Image
+            alt={name}
+            height={200} // Adjust height as needed
+            src={image}
+            width={200} // Adjust width as needed
+          />
+        </div>
+        <div className="w-96 py-3">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+            {name}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mt-2 ">
+            {description}
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">
+            <strong>Category:</strong> {category}
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 mt-1">
+            <strong>Brand:</strong> {brand}
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 mt-1">
+            <strong>Stock Quantity:</strong> {stock_quantity}
+          </p>
+          <p className="text-gray-800 dark:text-white font-bold mt-2 text-lg">
+            Price: ${price.toFixed(2)}
+          </p>
+          <p>
+            <ProductRatingGenerator stars={rating as number} />
+          </p>
+          <div className="mt-4">
+            <AddToCartButton data={data} />
           </div>
         </div>
       </div>

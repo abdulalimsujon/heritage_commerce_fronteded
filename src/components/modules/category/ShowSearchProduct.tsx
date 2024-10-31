@@ -1,10 +1,6 @@
-"use client";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
 import ProductCard from "../../UI/ProductCard";
-
 import { useAllProductQuery } from "@/src/redux/api/product/productApi";
 import { RootState } from "@/src/redux/store";
 import { Tproduct } from "@/src/types";
@@ -19,7 +15,6 @@ const ShowSearchProduct = () => {
   const searchTerm = useSelector(
     (state: RootState) => state.filters.searchTerm
   );
-
   const limit = useSelector((state: RootState) => state.filters.limit);
   const sort = useSelector((state: RootState) => state.filters.sort);
   const page = useSelector((state: RootState) => state.filters.page);
@@ -48,13 +43,18 @@ const ShowSearchProduct = () => {
   }
 
   const handleLimitChange = (event: { target: { value: string } }) => {
-    dispatch(setLimit(parseInt(event.target.value))); // Update the limit with the selected value
+    dispatch(setLimit(parseInt(event.target.value)));
   };
 
   const handlePageChange = (newPage: number) => {
     dispatch(setPage(newPage));
-    refetch(); // Refetch data with the new page number
+    refetch();
   };
+
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
 
   return (
     <div className="w-full">
@@ -105,38 +105,26 @@ const ShowSearchProduct = () => {
             : list === 4
               ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-4"
               : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
-        } ${list === 1 ? "flex justify-center" : ""}`} // Center items when grid-cols-1
+        } ${list === 1 ? "flex justify-center" : ""}`}
       >
         {data?.data?.result?.map((product: Tproduct) => (
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
-      <div className="flex justify-center items-center mt-4 space-x-2">
-        <button
-          className={`${
-            page === 1
-              ? "bg-gray-200 cursor-not-allowed"
-              : "bg-amber-400 hover:bg-amber-500"
-          } px-4 py-2 rounded`}
-          disabled={page === 1} // Disable "Previous" button on first page
-          onClick={() => handlePageChange(page - 1)}
-        >
-          Previous
-        </button>
-
-        <p className=" px-4 py-2 rounded">{page}</p>
-
-        <button
-          className={`${
-            page === totalPages || totalProducts === 0
-              ? "bg-gray-200 cursor-not-allowed"
-              : " bg-blue-300"
-          } px-4 py-2 rounded`}
-          disabled={page === totalPages} // Disable "Next" button on last page
-          onClick={() => handlePageChange(page + 1)}
-        >
-          Next
-        </button>
+      <div className="flex justify-center items-center mt-4 space-x-2 dark:text-black">
+        {pageNumbers.map((pageNumber) => (
+          <button
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            className={`px-4 py-2 rounded ${
+              page === pageNumber
+                ? "bg-green-500 text-white"
+                : "bg-green-300 hover:bg-green-300"
+            }`}
+          >
+            {pageNumber}
+          </button>
+        ))}
       </div>
     </div>
   );
