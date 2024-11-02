@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../../store";
 import { baseApi } from "../baseApi";
 
 export const userApi = baseApi.injectEndpoints({
@@ -6,16 +6,24 @@ export const userApi = baseApi.injectEndpoints({
     userRegistration: builder.mutation({
       query: (formData) => {
         return {
-          url: "/create-product",
+          url: "/users/create-user",
           method: "POST",
           body: formData,
         };
       },
     }),
+    loginUser: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/users/login",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
     updateUser: builder.mutation({
       query: ({ formData, id }) => {
-        // Destructure formData and id from a single object
-        console.log(id, formData);
+        //   console.log(id, formData);
         return {
           url: `/users/update-user/${id}`,
           method: "PATCH",
@@ -44,4 +52,9 @@ export const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useUpdateUserMutation } = userApi;
+export const {
+  useUpdateUserMutation,
+  useUserRegistrationMutation,
+  useLoginUserMutation,
+} = userApi;
+export const selectCurrentUser = (state: RootState) => state.auth.user;

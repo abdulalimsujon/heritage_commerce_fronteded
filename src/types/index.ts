@@ -25,3 +25,13 @@ export interface IInput {
   name: string;
   disabled?: boolean;
 }
+export type Tuser = {
+  _id: string;
+  name: string;
+  email: string;
+  mobile: string;
+  status: "Active" | "Inactive";
+  password: string;
+  image: string;
+  role: "user" | "admin";
+};

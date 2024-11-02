@@ -41,12 +41,12 @@ const Dropdown = () => {
       {/* Dropdown Content */}
       {dropdownOpen && (
         <div className="absolute left-0 z-10 w-48 mt-2 bg-white border rounded-md shadow-lg dropdown-content">
-          <NextLink passHref href="/user-management">
+          <NextLink passHref href="/admin/user-management">
             <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer">
               User Management
             </div>
           </NextLink>
-          <NextLink passHref href="/product-management">
+          <NextLink passHref href="/admin/product-management">
             <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer">
               Product Management
             </div>

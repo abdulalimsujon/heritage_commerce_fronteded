@@ -103,14 +103,10 @@ const ProductManagementPage: React.FC = () => {
   );
 
   const createProductSubmit = async (data: Tproduct) => {
-    console.log(data);
-
     const formData = new FormData();
 
-    console.log("ee", imageFile);
-
     Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, value);
+      formData.append(key, value as string);
     });
     if (imageFile) {
       formData.append("image", imageFile);

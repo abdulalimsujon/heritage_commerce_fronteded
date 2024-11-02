@@ -47,7 +47,9 @@ const CategoryDropdown = () => {
   return (
     <div className="pr-5">
       <div className="">
-        <h1 className="p-3 text-center bg-slate-100">Filters</h1>
+        <h1 className="p-3 text-center bg-slate-100 dark:bg-gray-500  dark:text-gray-50">
+          Filters
+        </h1>
 
         {/* Category Select */}
         <div className="flex flex-row w-full pt-3">

@@ -9,6 +9,7 @@ const slides = [
   "https://i.ibb.co.com/P1RV8gk/agriculture-lychee-fruit-thailand.jpg",
   "https://i.ibb.co.com/8c0bQgD/bench-palm-tress-public-park-covered-with-sand-storm-calima-tenerife-spain.jpg",
   "https://i.ibb.co.com/xfvg0gn/mangos-growing-ripe-mango-tree.jpg",
+  "https://ibb.co.com/RQC97Y4",
 ];
 
 const HomeSlider = () => {

@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/navbar";
 import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
-import { link as linkStyles } from "@nextui-org/theme";
+import { link as linkStyles, navbar } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
 
@@ -20,9 +20,13 @@ import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import { TwitterIcon, SearchIcon, Logo } from "@/src/components/icons";
 import NavbarInputSearch from "./NavbarInputSearch";
+import { getCurrentUser, logout } from "../services/authService";
+import LogoutBtn from "./logoutBtn";
+import LoginOrLogoutBtn from "./LoginOrLogoutBtn";
 
-export const Navbar = () => {
+export const Navbar = async () => {
   const searchInput = <NavbarInputSearch />;
+  const user = await getCurrentUser();
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -31,7 +35,7 @@ export const Navbar = () => {
           <NextLink href="/" passHref>
             <Link className="flex justify-start items-center gap-1">
               <Logo />
-              <p className="font-bold text-inherit">ACME</p>
+              <p className="font-bold text-green-700">Heritage Ecommerce</p>
             </Link>
           </NextLink>
         </NavbarBrand>
@@ -56,6 +60,7 @@ export const Navbar = () => {
         <Dropdown />
       </NavbarContent>
 
+      <LoginOrLogoutBtn />
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
@@ -63,32 +68,6 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
           <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-          <NavbarItem className="hidden lg:flex">
-            <NextLink href="/checkout" passHref>
-              <Link
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
-                )}
-                color="foreground"
-              >
-                <CartBadge />
-              </Link>
-            </NextLink>
-          </NavbarItem>
-          <NavbarItem className="hidden lg:flex">
-            <NextLink href="/login" passHref>
-              <Link
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
-                )}
-                color="foreground"
-              >
-                Login
-              </Link>
-            </NextLink>
-          </NavbarItem>
 
           <Link
             isExternal
@@ -96,7 +75,19 @@ export const Navbar = () => {
             href={siteConfig.links.twitter}
             className="text-default-500"
           >
-            <TwitterIcon />
+            <NavbarItem className="hidden lg:flex">
+              <NextLink href="/checkout" passHref>
+                <Link
+                  className={clsx(
+                    linkStyles({ color: "foreground" }),
+                    "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  )}
+                  color="foreground"
+                >
+                  <CartBadge />
+                </Link>
+              </NextLink>
+            </NavbarItem>
           </Link>
         </NavbarItem>
       </NavbarContent>

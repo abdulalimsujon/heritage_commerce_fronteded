@@ -6,6 +6,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 interface IConfig {
   defaultValues?: Record<string, unknown>;
   resolver?: any;
+  className?: string;
 }
 
 interface IProps extends IConfig {
@@ -13,7 +14,13 @@ interface IProps extends IConfig {
   onSubmit: SubmitHandler<any>;
 }
 
-const ECform = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
+const ECform = ({
+  children,
+  onSubmit,
+  defaultValues,
+  resolver,
+  className,
+}: IProps) => {
   const formConfig: IConfig = {};
 
   if (!!defaultValues) {
@@ -27,7 +34,9 @@ const ECform = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={submitHandler(onSubmit)}>{children}</form>
+      <form className={className} onSubmit={submitHandler(onSubmit)}>
+        {children}
+      </form>
     </FormProvider>
   );
 };

@@ -17,7 +17,6 @@ import ECform from "@/src/components/form/ECform";
 import ECInput from "@/src/components/form/ECInput";
 import { useCreateUser } from "@/src/app/hooks/create.user.hook";
 import { useGetAllUser } from "@/src/app/hooks/allUser.hook";
-import { useUpdateProductMutation } from "@/src/redux/api/product/productApi";
 import { useUpdateUserMutation } from "@/src/redux/api/user/userApi";
 
 const columns = [
@@ -45,7 +44,6 @@ type User = {
 };
 
 const UserManagementPage = () => {
-  const { mutateAsync: createUser } = useCreateUser();
   const [updateUser] = useUpdateUserMutation();
   const { data } = useGetAllUser();
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -60,7 +58,6 @@ const UserManagementPage = () => {
   };
 
   const handleSubmit = async (formDataValues: { [key: string]: any }) => {
-    console.log(formDataValues);
     if (!selectedUserId) return;
 
     const formData = new FormData();

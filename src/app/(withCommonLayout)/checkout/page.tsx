@@ -102,7 +102,6 @@ const CheckoutPage = () => {
                 required
                 className="w-full mt-1 p-2 border border-gray-300 rounded"
                 name="fullName"
-                placeholder="John Doe"
                 type="text"
                 value={formData.fullName}
                 onChange={handleChange}
@@ -116,7 +115,6 @@ const CheckoutPage = () => {
                 required
                 className="w-full mt-1 p-2 border border-gray-300 rounded"
                 name="email"
-                placeholder="john@example.com"
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
@@ -131,7 +129,6 @@ const CheckoutPage = () => {
               required
               className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="phone"
-              placeholder="123-456-7890"
               type="tel"
               value={formData.phone}
               onChange={handleChange}
@@ -145,7 +142,6 @@ const CheckoutPage = () => {
               required
               className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="shippingAddress"
-              placeholder="123 Main St, City, Country"
               type="text"
               value={formData.shippingAddress}
               onChange={handleChange}
@@ -159,7 +155,6 @@ const CheckoutPage = () => {
               required
               className="w-full mt-1 p-2 border border-gray-300 rounded"
               name="billingAddress"
-              placeholder="123 Main St, City, Country"
               type="text"
               value={formData.billingAddress}
               onChange={handleChange}

@@ -1,46 +1,142 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable prettier/prettier */
 "use client";
 
-import React, { useState } from "react";
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable prettier/prettier */
+
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+
+import { useState } from "react";
 import { useSelector } from "react-redux";
-
 import { RootState } from "@/src/redux/store";
+import { useCreatePaymentIntentMutation } from "@/src/redux/api/gateway/gatewayApi";
+// Adjust path as needed
 
-const PaymentPage = () => {
-  const { cart } = useSelector((state: RootState) => state.cart);
+const stripePromise = loadStripe(
+  "pk_test_51Ls9jVGslqmvXzFItLmpBXHrEo6T9744iSs0GnDuK92J6daEfjjMPsTYMO7MIwat0J2xARZLaIEUnAvCPzWaMLzU00FQ9kNlVm"
+);
 
-  // Calculate total price for all products in the cart
-  const grandTotalPrice = cart?.reduce((total, cartItem) => {
-    return total + (cartItem.price as number) * (cartItem.quantity as number);
-  }, 0);
+interface FormData {
+  amount: string;
+}
 
-  // State for payment form inputs
-  const [paymentData, setPaymentData] = useState({
-    cardNumber: "",
-    cardHolder: "",
-    expiryDate: "",
-    cvv: "",
+interface PaymentFormProps {
+  grandTotalAmount: string;
+}
+
+const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [formData, setFormData] = useState<FormData>({
+    amount: grandTotalAmount,
   });
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [createPaymentIntent] = useCreatePaymentIntentMutation();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    setPaymentData((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle payment submission logic (e.g., payment processing)
-    console.log("Payment submitted:", paymentData);
+    if (!stripe || !elements) return;
+
+    setLoading(true);
+    try {
+      const response = await createPaymentIntent({
+        price: Number(formData.amount),
+      }).unwrap();
+      console.log("Payment intent response:", response);
+      // Add further handling for the payment response here if needed
+    } catch (error) {
+      console.error("Payment failed:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-5 space-y-8">
-      <h1 className="text-2xl font-semibold text-center mb-5">Payment</h1>
+    <div className="rounded-lg shadow-md p-6 bg-blue-50 dark:bg-slate-50 mx-40">
+      <h3 className="text-2xl font-semibold mb-6 text-green-700">Payment</h3>
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <div>
+          <p className="text-sm font-medium text-gray-700 mb-2">
+            Accepted Cards
+          </p>
+          <div className="flex space-x-4">
+            <img
+              src="https://i.ibb.co/com/xLNQq3Y/card1.png"
+              alt="Card 1"
+              className="w-20 transition-transform transform hover:scale-110"
+            />
+            <img
+              src="https://i.ibb.co/com/YThSqw4/card2.png"
+              alt="Card 2"
+              className="w-16 transition-transform transform hover:scale-110"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Amount
+          </label>
+          <input
+            type="number"
+            name="amount"
+            value={formData.amount}
+            onChange={handleInputChange}
+            placeholder="Enter amount"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Card Details
+          </label>
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#424770",
+                  "::placeholder": {
+                    color: "#aab7c4",
+                  },
+                },
+                invalid: {
+                  color: "#9e2146",
+                },
+              },
+            }}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={!stripe || loading}
+          className="w-full mt-8 py-3 bg-green-700 text-white rounded-lg hover:bg-green-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
+        >
+          {loading ? "Processing..." : "Proceed to Checkout"}
+        </button>
+      </form>
+    </div>
+  );
+};
 
-      {/* Order Summary */}
+const Payment: React.FC = () => {
+  const { cart } = useSelector((state: RootState) => state.cart);
+  const grandTotalPrice =
+    cart?.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0;
+
+  return (
+    <div>
       <div className="border p-5 rounded-lg">
         <h2 className="text-xl font-semibold mb-3">Order Summary</h2>
         <div className="overflow-x-auto">
@@ -83,79 +179,11 @@ const PaymentPage = () => {
           Grand Total: ${grandTotalPrice.toFixed(2)}
         </div>
       </div>
-
-      {/* Payment Form */}
-      <div className="border p-5 rounded-lg">
-        <h2 className="text-xl font-semibold mb-3">Payment Details</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="block font-medium text-gray-700">
-              Card Number
-            </label>
-            <input
-              required
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              name="cardNumber"
-              placeholder="1234 5678 9012 3456"
-              type="text"
-              value={paymentData.cardNumber}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label className="block font-medium text-gray-700">
-              Card Holder Name
-            </label>
-            <input
-              required
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              name="cardHolder"
-              placeholder="John Doe"
-              type="text"
-              value={paymentData.cardHolder}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-medium text-gray-700">
-                Expiry Date
-              </label>
-              <input
-                required
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-                name="expiryDate"
-                placeholder="MM/YY"
-                type="text"
-                value={paymentData.expiryDate}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="block font-medium text-gray-700">CVV</label>
-              <input
-                required
-                className="w-full mt-1 p-2 border border-gray-300 rounded"
-                name="cvv"
-                placeholder="123"
-                type="text"
-                value={paymentData.cvv}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="text-right">
-            <button
-              className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-medium"
-              type="submit"
-            >
-              Complete Payment
-            </button>
-          </div>
-        </form>
-      </div>
+      <Elements stripe={stripePromise}>
+        <PaymentForm grandTotalAmount={grandTotalPrice.toFixed(2)} />
+      </Elements>
     </div>
   );
 };
 
-export default PaymentPage;
+export default Payment;

@@ -32,7 +32,7 @@ const ECInput = ({
       errorMessage={errors[name] ? (errors[name].message as string) : ""}
       isInvalid={!!errors[name]}
       {...register(name)}
-      className="my-2"
+      className="my-1"
       label={label}
       required={required}
       size={size}
