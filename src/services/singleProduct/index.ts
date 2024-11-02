@@ -11,7 +11,7 @@ export const SingleProductById = async (id: string) => {
 
   const res = await fetch(
     `${envConfig.baseApi}/products/getSingleProduct/${id}`,
-    fetchOptions
+    fetchOptions,
   );
 
   if (!res.ok) {

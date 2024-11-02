@@ -1,9 +1,11 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+
+import { NextResponse } from "next/server";
+
 import { getCurrentUser } from "./services/authService";
-import { useDispatch } from "react-redux";
 
 const authRoutes = ["/login", "/registration"];
+
 type TRole = keyof typeof roleBasedRoutes;
 
 const roleBasedRoutes = {
@@ -17,10 +19,6 @@ export async function middleware(request: NextRequest) {
   const user = await getCurrentUser();
 
   if (!user) {
-    // Allow access to login and registration routes for unauthenticated users
-    if (authRoutes.includes(pathname)) {
-      return NextResponse.next();
-    }
     // Redirect unauthenticated users to login if accessing other routes
     return NextResponse.redirect(
       new URL(`/login?redirect=${pathname}`, request.url)
@@ -48,10 +46,5 @@ export async function middleware(request: NextRequest) {
 
 // Matching paths configuration
 export const config = {
-  matcher: [
-    "/admin/product-management",
-    "/admin/user-management",
-    "/login",
-    "/registration",
-  ],
+  matcher: ["/admin/product-management", "/admin/user-management"],
 };

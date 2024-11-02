@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -8,31 +10,31 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/navbar";
 import { Link } from "@nextui-org/link";
-import { Input } from "@nextui-org/input";
-import { link as linkStyles, navbar } from "@nextui-org/theme";
+import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
 
 import CartBadge from "./badge";
 import Dropdown from "./Dropdown";
+import NavbarInputSearch from "./NavbarInputSearch";
+import LoginOrLogoutBtn from "./LoginOrLogoutBtn";
 
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
-import { TwitterIcon, SearchIcon, Logo } from "@/src/components/icons";
-import NavbarInputSearch from "./NavbarInputSearch";
-import { getCurrentUser, logout } from "../services/authService";
-import LogoutBtn from "./logoutBtn";
-import LoginOrLogoutBtn from "./LoginOrLogoutBtn";
+import { Logo } from "@/src/components/icons";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { selectCurrentUser } from "../redux/features/Authslice";
 
-export const Navbar = async () => {
+export const Navbar = () => {
   const searchInput = <NavbarInputSearch />;
-  const user = await getCurrentUser();
+  const user = useSelector((state: RootState) => selectCurrentUser(state));
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
-          <NextLink href="/" passHref>
+          <NextLink passHref href="/">
             <Link className="flex justify-start items-center gap-1">
               <Logo />
               <p className="font-bold text-green-700">Heritage Ecommerce</p>
@@ -42,7 +44,7 @@ export const Navbar = async () => {
         <NavbarContent className="hidden lg:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
-              <NextLink href={item.href} passHref>
+              <NextLink passHref href={item.href}>
                 <Link
                   className={clsx(
                     linkStyles({ color: "foreground" }),
@@ -56,8 +58,8 @@ export const Navbar = async () => {
             </NavbarItem>
           ))}
         </NavbarContent>
-        {/* Management Dropdown */}
-        <Dropdown />
+
+        {user && user.role === "admin" && <Dropdown />}
       </NavbarContent>
 
       <LoginOrLogoutBtn />
@@ -72,11 +74,11 @@ export const Navbar = async () => {
           <Link
             isExternal
             aria-label="Twitter"
-            href={siteConfig.links.twitter}
             className="text-default-500"
+            href={siteConfig.links.twitter}
           >
             <NavbarItem className="hidden lg:flex">
-              <NextLink href="/checkout" passHref>
+              <NextLink passHref href="/checkout">
                 <Link
                   className={clsx(
                     linkStyles({ color: "foreground" }),
@@ -102,7 +104,7 @@ export const Navbar = async () => {
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={item.label}>
-              <NextLink href={item.href} passHref>
+              <NextLink passHref href={item.href}>
                 <Link
                   color={
                     index === 2

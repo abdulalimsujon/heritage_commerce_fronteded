@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 
 import React, { useState, useCallback } from "react";
@@ -11,13 +12,17 @@ import {
   TableRow,
 } from "@nextui-org/table";
 
+import Swal from "sweetalert2";
 import { DeleteIcon, EditIcon, EyeIcon } from "@/src/components/icons";
 import ReusableModal from "@/src/components/ReusableModal";
 import ECform from "@/src/components/form/ECform";
 import ECInput from "@/src/components/form/ECInput";
-import { useCreateUser } from "@/src/app/hooks/create.user.hook";
 import { useGetAllUser } from "@/src/app/hooks/allUser.hook";
-import { useUpdateUserMutation } from "@/src/redux/api/user/userApi";
+import {
+  useDeleteUserMutation,
+  useUpdateUserMutation,
+} from "@/src/redux/api/user/userApi";
+import { toast } from "react-toastify";
 
 const columns = [
   { name: "Name", uid: "name", align: "center" },
@@ -45,10 +50,11 @@ type User = {
 
 const UserManagementPage = () => {
   const [updateUser] = useUpdateUserMutation();
-  const { data } = useGetAllUser();
+  const { data, refetch } = useGetAllUser();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [defaultValues, setDefaultValues] = useState<User | null>(null);
+  const [deleteUser] = useDeleteUserMutation();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,8 +65,8 @@ const UserManagementPage = () => {
 
   const handleSubmit = async (formDataValues: { [key: string]: any }) => {
     if (!selectedUserId) return;
-
     const formData = new FormData();
+
     Object.entries(formDataValues).forEach(([key, value]) => {
       formData.append(key, value);
     });
@@ -71,15 +77,32 @@ const UserManagementPage = () => {
 
     try {
       await updateUser({ formData, id: formDataValues._id });
-      console.log("User successfully updated");
+      toast.success("User successfully updated");
+      refetch();
     } catch (error) {
-      console.error("Error updating user:", error);
+      toast.error("Error updating user:");
     }
   };
 
   const handleEditClick = (user: User) => {
     setSelectedUserId(user._id);
     setDefaultValues(user); // Set default values for the modal
+  };
+
+  const handleDeleteClick = (userId: string) => {
+    Swal.fire({
+      title: "Are you sure you want to delete this user?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteUser(userId);
+        refetch();
+        Swal.fire("Deleted!", "The user has been deleted.", "success");
+      }
+    });
   };
 
   const renderCell = useCallback(
@@ -131,7 +154,7 @@ const UserManagementPage = () => {
               <Tooltip content="Edit user">
                 <span
                   className="text-lg cursor-pointer"
-                  onClick={() => handleEditClick(user)} // Update here
+                  onClick={() => handleEditClick(user)}
                 >
                   <ReusableModal
                     content={
@@ -145,12 +168,12 @@ const UserManagementPage = () => {
 
                         <input
                           className="py-2"
-                          placeholder="Image"
                           name="image"
+                          placeholder="Image"
                           type="file"
                           onChange={handleImageChange}
                         />
-                        <Button type="submit ">Edit</Button>
+                        <Button type="submit">Edit</Button>
                       </ECform>
                     }
                     placement="top"
@@ -160,7 +183,10 @@ const UserManagementPage = () => {
                 </span>
               </Tooltip>
               <Tooltip color="danger" content="Delete user">
-                <span className="text-lg text-danger cursor-pointer">
+                <span
+                  className="text-lg text-danger cursor-pointer"
+                  onClick={() => handleDeleteClick(user._id)}
+                >
                   <DeleteIcon />
                 </span>
               </Tooltip>
@@ -193,8 +219,8 @@ const UserManagementPage = () => {
           </TableColumn>
         ))}
       </TableHeader>
-      <TableBody itemKey="id" items={users}>
-        {(item: User) => (
+      <TableBody<User> itemKey="_id" items={users}>
+        {(item) => (
           <TableRow key={item._id}>
             {(columnKey) => (
               <TableCell className="px-4 py-2 text-center">

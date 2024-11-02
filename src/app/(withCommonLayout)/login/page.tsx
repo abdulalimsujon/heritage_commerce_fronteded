@@ -1,20 +1,31 @@
 "use client";
 
+import { Button } from "@nextui-org/button";
+import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+
 import ECform from "@/src/components/form/ECform";
 import ECInput from "@/src/components/form/ECInput";
 import { useLoginUserMutation } from "@/src/redux/api/user/userApi";
-import { setUser } from "@/src/redux/features/authslice";
-import { Button } from "@nextui-org/button";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
-import { useDispatch } from "react-redux";
+import { setUser } from "@/src/redux/features/Authslice";
+import { Tuser } from "@/src/types";
 
 const Login = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
+
   const redirect = searchParams.get("redirect");
-  const [loginUser, { isLoading, isSuccess }] = useLoginUserMutation();
+  const [loginUser, { data, isLoading, isSuccess }] = useLoginUserMutation();
+  const token = data?.data?.accessToken;
+
+  if (token) {
+    const decoded = jwtDecode(token);
+
+    dispatch(setUser(decoded as Tuser));
+  }
 
   const handleSubmit = async (data: { emai: string; password: string }) => {
     await loginUser(data);
@@ -34,16 +45,16 @@ const Login = () => {
         <h2 className="text-2xl font-semibold text-center dark:text-green-400">
           Login
         </h2>
-        <ECform onSubmit={handleSubmit} className="space-y-4">
-          <ECInput name="email" label="Email" type="email" size="lg" required />
+        <ECform className="space-y-4" onSubmit={handleSubmit}>
+          <ECInput required label="Email" name="email" size="lg" type="email" />
           <ECInput
-            name="password"
-            label="Password"
-            type="password"
-            size="lg"
             required
+            label="Password"
+            name="password"
+            size="lg"
+            type="password"
           />
-          <Button type="submit" className="w-full mt-4">
+          <Button className="w-full mt-4" type="submit">
             Login
           </Button>
         </ECform>

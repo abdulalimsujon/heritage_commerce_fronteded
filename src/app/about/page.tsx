@@ -56,10 +56,10 @@ const About = () => {
               style={{ height: "400px", width: "300px" }}
             >
               <img
-                className="object-cover"
-                style={{ height: "400px", width: "300px" }}
-                src="https://i.ibb.co/T26QdqM/friendly-young-business-student-entrepreneur-260nw-2257917031.webp"
                 alt="Team Member 1"
+                className="object-cover"
+                src="https://i.ibb.co/T26QdqM/friendly-young-business-student-entrepreneur-260nw-2257917031.webp"
+                style={{ height: "400px", width: "300px" }}
               />
             </div>
             <div className="bg-slate-50 dark:bg-gray-700 p-4">
@@ -80,10 +80,10 @@ const About = () => {
               style={{ height: "400px", width: "300px" }}
             >
               <img
-                className="object-cover"
-                style={{ height: "400px", width: "300px" }}
-                src="https://i.ibb.co/Zh1cQK8/photo-2023-09-03-19-55-32.jpg"
                 alt="Team Member 2"
+                className="object-cover"
+                src="https://i.ibb.co/Zh1cQK8/photo-2023-09-03-19-55-32.jpg"
+                style={{ height: "400px", width: "300px" }}
               />
             </div>
             <div className="bg-slate-50 dark:bg-gray-700 p-4">
@@ -103,10 +103,10 @@ const About = () => {
               style={{ height: "400px", width: "300px" }}
             >
               <img
-                className="object-cover "
-                style={{ height: "400px", width: "300px" }}
-                src="https://i.ibb.co/71wcwV6/beautiful-brunette-business-woman-entrepreneur-260nw-2256752029.webp"
                 alt="Team Member 3"
+                className="object-cover "
+                src="https://i.ibb.co/71wcwV6/beautiful-brunette-business-woman-entrepreneur-260nw-2256752029.webp"
+                style={{ height: "400px", width: "300px" }}
               />
             </div>
             <div className="bg-slate-50 dark:bg-gray-700 p-4">
@@ -149,15 +149,15 @@ const About = () => {
         </div>
         <div className="lg:w-full p-6">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48327.22868242238!2d-73.935242
-            !3d40.73061!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z0LIuMyrUtBPhkcjYDQ!5e0!3m2!1sen!2sus!4v1620307366544!5m2!1sen!2sus"
-            width="100%"
+            className="rounded-lg shadow-lg"
             height="450"
             loading="lazy"
-            className="rounded-lg shadow-lg"
             referrerPolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48327.22868242238!2d-73.935242
+            !3d40.73061!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z0LIuMyrUtBPhkcjYDQ!5e0!3m2!1sen!2sus!4v1620307366544!5m2!1sen!2sus"
             title="map"
-          ></iframe>
+            width="100%"
+          />
         </div>
       </div>
     </div>

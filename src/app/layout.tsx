@@ -1,13 +1,15 @@
 import "@/src/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Providers } from "../lib/Providers";
+import Footer from "../components/footer";
 
 import { siteConfig } from "@/src/config/site";
 import { fontSans } from "@/src/config/fonts";
 import { Navbar } from "@/src/components/navbar";
-import Footer from "../components/footer";
 
 export const metadata: Metadata = {
   title: {
@@ -46,6 +48,7 @@ export default function RootLayout({
             <Navbar />
             <main className="container mx-auto max-w-full pt-16 px-6 flex-grow">
               {children}
+              <ToastContainer />
             </main>
             <Footer />
           </div>

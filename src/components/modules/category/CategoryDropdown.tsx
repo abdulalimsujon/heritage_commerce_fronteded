@@ -21,15 +21,15 @@ const CategoryDropdown = () => {
   // Extract categories and brands
   const categories = Array.from(
     new Set(
-      data?.data?.result?.map((p: Tproduct) => p.category).filter(Boolean)
-    )
+      data?.data?.result?.map((p: Tproduct) => p.category).filter(Boolean),
+    ),
   ).map((category) => ({
     key: category,
     label: category,
   }));
 
   const brands = Array.from(
-    new Set(data?.data?.result?.map((p: Tproduct) => p.brand).filter(Boolean))
+    new Set(data?.data?.result?.map((p: Tproduct) => p.brand).filter(Boolean)),
   ).map((brand) => ({
     key: brand,
     label: brand,

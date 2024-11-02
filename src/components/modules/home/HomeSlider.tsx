@@ -18,11 +18,11 @@ const HomeSlider = () => {
       <Carousel autoSlide={true} autoSlideInterval={1500}>
         {slides.map((s, index) => (
           <Image
-            width={300}
-            height={350}
             key={index}
             alt={`Slide ${index + 1}`}
+            height={350}
             src={s}
+            width={300}
           />
         ))}
       </Carousel>

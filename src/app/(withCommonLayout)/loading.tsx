@@ -1,7 +1,8 @@
 "use client";
 
-import LoaderSpinner from "@/src/components/utilities/LoaderSpinner";
 import React from "react";
+
+import LoaderSpinner from "@/src/components/utilities/LoaderSpinner";
 
 const Loading = () => {
   return (

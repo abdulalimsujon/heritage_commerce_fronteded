@@ -2,8 +2,8 @@
 
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
+
 import { Tuser } from "../types";
-import { access } from "fs";
 
 export const getCurrentUser = async () => {
   const accessToken = cookies().get("accessToken")?.value;

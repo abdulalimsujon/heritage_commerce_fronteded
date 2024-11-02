@@ -20,7 +20,7 @@ const AddToCartButton = ({ data }: { data: Tproduct }) => {
         price: data.price,
         name: data.name,
         quantity: data.stock_quantity,
-      })
+      }),
     );
     router.push(`/cart/${id}`);
   };

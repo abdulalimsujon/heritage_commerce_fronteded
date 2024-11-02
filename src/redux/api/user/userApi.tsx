@@ -31,21 +31,12 @@ export const userApi = baseApi.injectEndpoints({
         };
       },
     }),
-    deleteProduct: builder.mutation({
+    deleteUser: builder.mutation({
       query: (id) => {
         return {
-          url: `/delete-product/${id}`,
+          url: `/users/delete-user/${id}`,
           method: "DELETE",
           body: { id },
-        };
-      },
-    }),
-    updateProduct: builder.mutation({
-      query: (options) => {
-        return {
-          url: `/update-product/${options.id}`,
-          method: "PATCH",
-          body: options.data,
         };
       },
     }),
@@ -56,5 +47,5 @@ export const {
   useUpdateUserMutation,
   useUserRegistrationMutation,
   useLoginUserMutation,
+  useDeleteUserMutation,
 } = userApi;
-export const selectCurrentUser = (state: RootState) => state.auth.user;

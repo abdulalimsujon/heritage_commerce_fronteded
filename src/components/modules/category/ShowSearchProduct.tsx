@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+
 import ProductCard from "../../UI/ProductCard";
+
 import { useAllProductQuery } from "@/src/redux/api/product/productApi";
 import { RootState } from "@/src/redux/store";
 import { Tproduct } from "@/src/types";
@@ -13,7 +15,7 @@ const ShowSearchProduct = () => {
   const price = useSelector((state: RootState) => state.filters.price);
   const rating = useSelector((state: RootState) => state.filters.rating);
   const searchTerm = useSelector(
-    (state: RootState) => state.filters.searchTerm
+    (state: RootState) => state.filters.searchTerm,
   );
   const limit = useSelector((state: RootState) => state.filters.limit);
   const sort = useSelector((state: RootState) => state.filters.sort);
@@ -53,7 +55,7 @@ const ShowSearchProduct = () => {
 
   const pageNumbers = Array.from(
     { length: totalPages },
-    (_, index) => index + 1
+    (_, index) => index + 1,
   );
 
   return (
@@ -115,12 +117,12 @@ const ShowSearchProduct = () => {
         {pageNumbers.map((pageNumber) => (
           <button
             key={pageNumber}
-            onClick={() => handlePageChange(pageNumber)}
             className={`px-4 py-2 rounded ${
               page === pageNumber
                 ? "bg-green-500 text-white"
                 : "bg-green-300 hover:bg-green-300"
             }`}
+            onClick={() => handlePageChange(pageNumber)}
           >
             {pageNumber}
           </button>

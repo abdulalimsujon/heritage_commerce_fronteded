@@ -1,16 +1,18 @@
 "use client";
 
+import { Button } from "@nextui-org/button";
+import React, { useState } from "react";
+
 import ECform from "@/src/components/form/ECform";
 import ECInput from "@/src/components/form/ECInput";
 import { useUserRegistrationMutation } from "@/src/redux/api/user/userApi";
-import { Button } from "@nextui-org/button";
-import React, { useState } from "react";
 
 const Registration = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [userRegistration] = useUserRegistrationMutation();
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
       setImageFile(file);
     }
@@ -20,6 +22,7 @@ const Registration = () => {
     console.log(data);
 
     const formData = new FormData();
+
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value);
     });
@@ -36,31 +39,31 @@ const Registration = () => {
       <div className=" flex flex-col justify-center items-center mx-auto w-[1400px] h-[600px]">
         <h1 className="text-center text-xl ">Register</h1>
         <ECform
-          onSubmit={handleSubmit}
           className="p-10 w-full max-w-lg  rounded-lg"
+          onSubmit={handleSubmit}
         >
-          <ECInput name="name" label="User Name" size="lg" required />
-          <ECInput name="email" label="Email" type="email" size="lg" />
+          <ECInput required label="User Name" name="name" size="lg" />
+          <ECInput label="Email" name="email" size="lg" type="email" />
           <ECInput label="User Mobile" name="mobile" size="lg" />
           <ECInput
-            name="password"
-            label="Password"
-            type="password"
-            size="lg"
             required
+            label="Password"
+            name="password"
+            size="lg"
+            type="password"
           />
 
           <div className="border rounded-lg">
             <input
               className="py-2"
-              placeholder="Image"
               name="image"
+              placeholder="Image"
               type="file"
               onChange={handleImageChange}
             />
           </div>
 
-          <Button type="submit" className="w-full mt-6">
+          <Button className="w-full mt-6" type="submit">
             Register
           </Button>
         </ECform>

@@ -1,4 +1,5 @@
 import React from "react";
+
 import FooterInput from "./utilities/FooterInput";
 
 const Footer = () => {

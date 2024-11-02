@@ -1,7 +1,6 @@
 "use client";
 
-import { Image, Button } from "@nextui-org/react";
-
+import { Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { CiHeart } from "react-icons/ci";
 
@@ -31,8 +30,8 @@ const ProductCard = ({ product }: { product: Tproduct }) => {
       <div className="mt-3 absolute bottom-2 left-1/2 transform -translate-x-1/2 translate-y-4 transition-transform ease-in-out opacity-0 group-hover:opacity-100 group-hover:translate-y-0 duration-50">
         <div className="flex gap-2">
           <button
-            onClick={() => router.push(`/singleProduct/${_id}`)}
             className="font-bold px-3 w-16 h-10 text-black dark:text-white bg-white dark:bg-green-700 flex justify-center items-center rounded-sm p-5 hover:bg-green-500 dark:hover:bg-green-600"
+            onClick={() => router.push(`/singleProduct/${_id}`)}
           >
             Details
           </button>

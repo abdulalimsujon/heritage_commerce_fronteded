@@ -1,28 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { Tuser } from "@/src/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-type userProps = {
-  name: string;
-  email: string;
+type InitialStateProps = {
+  user: Tuser | null;
 };
 
-type initialStateProps = {
-  user: userProps[];
-};
-
-const initialState: initialStateProps = {
-  user: [],
+const initialState: InitialStateProps = {
+  user: null,
 };
 
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (state, action: PayloadAction<Tuser>) => {
       state.user = action.payload;
+    },
+    userLogout: (state) => {
+      state.user = null;
     },
   },
 });
-
-export const { setUser } = AuthSlice.actions;
+export const selectCurrentUser = (state: RootState) => state.auth.user;
+export const { setUser, userLogout } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

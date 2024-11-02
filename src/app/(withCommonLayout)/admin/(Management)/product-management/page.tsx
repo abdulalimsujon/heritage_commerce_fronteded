@@ -1,7 +1,11 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/jsx-no-duplicate-props */
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable react/jsx-sort-props */
 "use client";
 
 import React, { useCallback, useState } from "react";
+import Swal from "sweetalert2";
 import {
   Table,
   TableBody,
@@ -10,12 +14,14 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/table";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Button, Tooltip, Spinner } from "@nextui-org/react";
+import { toast } from "react-toastify";
 
 import { DeleteIcon, EditIcon, EyeIcon } from "@/src/components/icons";
 import {
   useAllProductFromDbQuery,
   useCreateProductMutation,
+  useDeleteProductMutation,
   useUpdateProductMutation,
 } from "@/src/redux/api/product/productApi";
 import { Tproduct } from "@/src/types";
@@ -24,7 +30,6 @@ import ECform from "@/src/components/form/ECform";
 import ECInput from "@/src/components/form/ECInput";
 import ECTextArea from "@/src/components/form/ECTextArea";
 
-// Column Definitions
 const columns = [
   { name: "Image", uid: "image" },
   { name: "Name", uid: "name" },
@@ -32,104 +37,80 @@ const columns = [
   { name: "Price", uid: "price" },
   { name: "Brand", uid: "brand" },
   { name: "Category", uid: "category" },
+  { name: "Stock Quantity", uid: "stock_quantity" },
   { name: "Actions", uid: "actions" },
 ];
 
 const ProductManagementPage: React.FC = () => {
-  const { data, isLoading, error } = useAllProductFromDbQuery(undefined);
-  const [
-    updateProduct,
-    { isLoading: updateLoading, isError, isSuccess, reset },
-  ] = useUpdateProductMutation();
+  const { data, isLoading, error, refetch } =
+    useAllProductFromDbQuery(undefined);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [createProduct, { isLoading: addLoading, isSuccess: isCreateSuccess }] =
-    useCreateProductMutation();
+  const [createProduct, { isLoading: addLoading }] = useCreateProductMutation();
+  const [deleteProduct, { isLoading: deleteLoading }] =
+    useDeleteProductMutation();
+  const [updateProduct, { isLoading: updateLoading }] =
+    useUpdateProductMutation();
 
-  // State to manage image file
-
-  // Handle image file input change
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (file) {
       setImageFile(file);
     }
   };
 
-  // Handle form submission for create product
-  const edithandleSubmit = async (formDataValues: { [key: string]: any }) => {
-    const formData = new FormData();
-
-    Object.entries(formDataValues).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
-  };
-
-  // Modal content with form
-  const editModalContent = (product?: Tproduct) => (
-    <ECform
-      defaultValues={{
-        name: product?.name || "",
-        description: product?.description || "",
-        price: product?.price || "",
-        brand: product?.brand || "",
-        category: product?.category || "",
-      }}
-      onSubmit={edithandleSubmit}
-    >
-      <ECInput name="name" label="Product Name" size="sm" />
-      <ECInput name="price" label="Price" size="sm" type="number" />
-      <ECInput name="brand" label="Brand" size="sm" />
-      <ECInput name="stock_quantity" label="stock_quantity" size="sm" />
-      <ECInput name="rating" label="rating" size="sm" />
-      <ECTextArea
-        name="description"
-        label="Description"
-        placeholder="Enter your description"
-      />
-      <ECInput name="category" label="Category" size="sm" />
-      <input
-        className="py-2"
-        placeholder="Image"
-        name="image"
-        type="file"
-        onChange={handleImageChange}
-      />
-      <Button type="submit">Save Changes</Button>
-    </ECform>
-  );
-
   const createProductSubmit = async (data: Tproduct) => {
     const formData = new FormData();
-
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value as string);
     });
     if (imageFile) {
       formData.append("image", imageFile);
     }
-    await createProduct(formData);
+    try {
+      await createProduct(formData).unwrap();
+      toast.success("Product created successfully!");
+      refetch();
+    } catch (err) {
+      toast.error("Failed to create product.");
+    }
   };
 
-  const CreateModalContent = (product?: Tproduct) => (
+  const handleEditProductSubmit = async (data: Tproduct, productId: string) => {
+    console.log(data);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as string);
+    });
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+    try {
+      await updateProduct({ id: productId, formData }).unwrap();
+      toast.success("Product updated successfully!");
+      refetch();
+    } catch (err) {
+      toast.error("Failed to update product.");
+    }
+  };
+
+  const createModalContent = () => (
     <ECform
       defaultValues={{
-        name: product?.name || "",
-        description: product?.description || "",
-        price: product?.price || "",
-        brand: product?.brand || "",
-        category: product?.category || "",
+        name: "",
+        description: "",
+        price: "",
+        brand: "",
+        category: "",
+        stock_quantity: "",
+        rating: "",
       }}
       onSubmit={createProductSubmit}
     >
       <ECInput name="name" label="Product Name" size="sm" />
       <ECInput name="price" label="Price" size="sm" type="number" />
       <ECInput name="brand" label="Brand" size="sm" />
-      <ECInput name="stock_quantity" label="stock_quantity" size="sm" />
-      <ECInput name="rating" label="rating" size="sm" />
+      <ECInput name="stock_quantity" label="Stock Quantity" size="sm" />
+      <ECInput name="rating" label="Rating" size="sm" />
       <ECTextArea name="description" placeholder="Enter your description" />
       <ECInput name="category" label="Category" size="sm" />
       <input
@@ -139,52 +120,85 @@ const ProductManagementPage: React.FC = () => {
         type="file"
         onChange={handleImageChange}
       />
-      <Button type="submit">Save Changes</Button>
+      <Button type="submit" isLoading={addLoading}>
+        {addLoading ? <Spinner /> : "Save Changes"}
+      </Button>
     </ECform>
   );
 
-  // Map the product data from the query
-  const products: Tproduct[] =
-    data?.data?.result?.map((product: Tproduct) => ({
-      _id: product._id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      brand: product.brand,
-      category: product.category,
-      image: product.image,
-    })) || [];
+  const editModalContent = (product: Tproduct) => (
+    <ECform
+      defaultValues={{
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        brand: product.brand,
+        category: product.category,
+        stock_quantity: product.stock_quantity,
+        image: product.image,
+        rating: product.rating,
+      }}
+      onSubmit={(data) => handleEditProductSubmit(data, product._id)}
+    >
+      <ECInput name="name" label="Product Name" size="sm" />
+      <ECInput name="price" label="Price" size="sm" type="number" />
+      <ECInput name="brand" label="Brand" size="sm" />
+      <ECInput name="stock_quantity" label="Stock Quantity" size="sm" />
+      <ECInput name="rating" label="Rating" size="sm" />
+      <ECTextArea name="description" placeholder="Enter your description" />
+      <ECInput name="category" label="Category" size="sm" />
+      <input
+        className="py-2"
+        placeholder="Image"
+        name="image"
+        type="file"
+        onChange={handleImageChange}
+      />
+      <Button type="submit" isLoading={updateLoading}>
+        {updateLoading ? <Spinner /> : "Update Product"}
+      </Button>
+    </ECform>
+  );
 
-  // Render cells based on column type
+  const handleDeleteProduct = (productId: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action will delete the product permanently!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteProduct(productId).unwrap();
+          toast.success("Product deleted successfully!");
+          refetch();
+        } catch (err) {
+          toast.error("Failed to delete product.");
+        }
+      }
+    });
+  };
+
   const renderCell = useCallback(
     (
       product: Tproduct,
       columnKey: keyof Tproduct | "actions"
     ): React.ReactNode => {
       const cellValue = product[columnKey as keyof Tproduct];
-
       switch (columnKey) {
         case "image":
           return (
             <div className="flex justify-center">
               <img
-                alt=""
                 src={product.image}
                 alt={`${product.name}`}
                 className="w-12 h-12 object-cover rounded"
               />
             </div>
           );
-        case "name":
-          return <p className="text-sm font-semibold">{product.name}</p>;
-        case "description":
-          return <p className="text-sm">{product.description}</p>;
-        case "price":
-          return <p className="text-sm">${product.price.toFixed(2)}</p>;
-        case "brand":
-          return <p className="text-sm">{product.brand}</p>;
-        case "category":
-          return <p className="text-sm">{product.category}</p>;
         case "actions":
           return (
             <div className="flex items-center gap-2">
@@ -202,8 +216,11 @@ const ProductManagementPage: React.FC = () => {
                 />
               </Tooltip>
               <Tooltip color="danger" content="Delete product">
-                <span className="text-lg text-danger cursor-pointer">
-                  <DeleteIcon />
+                <span
+                  className="text-lg text-danger cursor-pointer"
+                  onClick={() => handleDeleteProduct(product._id)}
+                >
+                  {deleteLoading ? <Spinner /> : <DeleteIcon />}
                 </span>
               </Tooltip>
             </div>
@@ -212,10 +229,10 @@ const ProductManagementPage: React.FC = () => {
           return <p>{cellValue}</p>;
       }
     },
-    []
+    [deleteLoading]
   );
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
   if (error) return <p>Error loading data</p>;
 
   return (
@@ -224,7 +241,7 @@ const ProductManagementPage: React.FC = () => {
         <h1 className="text-xl font-semibold mb-4">Product Management</h1>
         <ReusableModal
           title="Create Product"
-          content={CreateModalContent()}
+          content={createModalContent()}
           placement="top"
           triggerText={<span className="p-3">Create</span>}
         />
@@ -238,7 +255,7 @@ const ProductManagementPage: React.FC = () => {
             </TableColumn>
           ))}
         </TableHeader>
-        <TableBody items={products} itemKey="_id">
+        <TableBody items={data?.data?.result || []} itemKey="_id">
           {(item) => (
             <TableRow key={item._id}>
               {columns.map((column) => (

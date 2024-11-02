@@ -8,8 +8,8 @@ const FooterInput = () => {
     <div className="dark:text-gray-700">
       <input
         className="p-2 my-2 rounded-md"
-        type="text "
         placeholder="Enter your email"
+        type="text "
       />
       <button className="ml-2 p-2 my-2 rounded-md bg-green-500 text-white">
         SUBSCRIBE

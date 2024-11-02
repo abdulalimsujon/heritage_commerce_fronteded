@@ -65,27 +65,19 @@ const productApi = baseApi.injectEndpoints({
         };
       },
     }),
-    deleteBike: builder.mutation({
-      query: (bikeId) => {
+    deleteProduct: builder.mutation({
+      query: (productId) => {
         return {
-          url: `/${bikeId}`,
+          url: `/products/delete-product/${productId}`,
           method: "DELETE",
         };
       },
     }),
-    singleProduct: builder.query({
-      query: (productId) => {
-        return {
-          url: `/bikes/single-bike/${productId}`,
-          method: "GET",
-        };
-      },
-    }),
+
     updateProduct: builder.mutation({
-      query: ({ formData, id }) => {
-        // Destructure formData and id from a single object
+      query: ({ id, formData }) => {
         return {
-          url: `/update-product/${id}`,
+          url: `/products/update-product/${id}`,
           method: "PATCH",
           body: formData,
         };
@@ -99,4 +91,5 @@ export const {
   useAllProductFromDbQuery,
   useUpdateProductMutation,
   useCreateProductMutation,
+  useDeleteProductMutation,
 } = productApi;

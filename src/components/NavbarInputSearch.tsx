@@ -2,11 +2,13 @@
 
 import { Input } from "@nextui-org/input";
 import React, { useState } from "react";
-import { SearchIcon } from "./icons";
 import { Button } from "@nextui-org/button";
-import { useDispatch, useSelector } from "react-redux";
-import { setSearchTerm } from "../redux/features/FilterSlice";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+
+import { setSearchTerm } from "../redux/features/FilterSlice";
+
+import { SearchIcon } from "./icons";
 
 const NavbarInputSearch = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -36,9 +38,7 @@ const NavbarInputSearch = () => {
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
       />
-      <Button onPress={handleSearchClick} auto>
-        Search
-      </Button>
+      <Button onPress={handleSearchClick}>Search</Button>
     </div>
   );
 };

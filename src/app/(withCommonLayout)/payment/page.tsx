@@ -10,9 +10,9 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-
 import { useState } from "react";
 import { useSelector } from "react-redux";
+
 import { RootState } from "@/src/redux/store";
 import { useCreatePaymentIntentMutation } from "@/src/redux/api/gateway/gatewayApi";
 // Adjust path as needed
@@ -41,6 +41,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData({ ...formData, [name]: value });
   };
 
@@ -53,6 +54,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
       const response = await createPaymentIntent({
         price: Number(formData.amount),
       }).unwrap();
+
       console.log("Payment intent response:", response);
       // Add further handling for the payment response here if needed
     } catch (error) {
@@ -72,14 +74,14 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
           </p>
           <div className="flex space-x-4">
             <img
-              src="https://i.ibb.co/com/xLNQq3Y/card1.png"
               alt="Card 1"
               className="w-20 transition-transform transform hover:scale-110"
+              src="https://i.ibb.co/com/xLNQq3Y/card1.png"
             />
             <img
-              src="https://i.ibb.co/com/YThSqw4/card2.png"
               alt="Card 2"
               className="w-16 transition-transform transform hover:scale-110"
+              src="https://i.ibb.co/com/YThSqw4/card2.png"
             />
           </div>
         </div>
@@ -88,12 +90,12 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
             Amount
           </label>
           <input
-            type="number"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
             name="amount"
+            placeholder="Enter amount"
+            type="number"
             value={formData.amount}
             onChange={handleInputChange}
-            placeholder="Enter amount"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
           />
         </div>
         <div>
@@ -101,6 +103,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
             Card Details
           </label>
           <CardElement
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
             options={{
               style: {
                 base: {
@@ -115,13 +118,12 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
                 },
               },
             }}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
           />
         </div>
         <button
-          type="submit"
-          disabled={!stripe || loading}
           className="w-full mt-8 py-3 bg-green-700 text-white rounded-lg hover:bg-green-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
+          disabled={!stripe || loading}
+          type="submit"
         >
           {loading ? "Processing..." : "Proceed to Checkout"}
         </button>

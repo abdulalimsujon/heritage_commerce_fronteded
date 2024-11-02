@@ -1,5 +1,7 @@
 import Image from "next/image";
+
 import AddToCartButton from "../AddToCartButton";
+
 import { SingleProductById } from "@/src/services/singleProduct";
 import ProductRatingGenerator from "@/src/components/ProductRatingGenerator";
 
