@@ -29,6 +29,8 @@ import ReusableModal from "@/src/components/ReusableModal";
 import ECform from "@/src/components/form/ECform";
 import ECInput from "@/src/components/form/ECInput";
 import ECTextArea from "@/src/components/form/ECTextArea";
+import ECselect from "@/src/components/form/ECselect";
+import { useAllCategoryQuery } from "@/src/redux/api/categoryApi";
 
 const columns = [
   { name: "Image", uid: "image" },
@@ -50,6 +52,16 @@ const ProductManagementPage: React.FC = () => {
     useDeleteProductMutation();
   const [updateProduct, { isLoading: updateLoading }] =
     useUpdateProductMutation();
+
+  const { data: categorydata } = useAllCategoryQuery(undefined);
+
+  console.log(categorydata);
+  const categorySelect = categorydata?.data?.map((e) => ({
+    name: e.name,
+    label: e.name,
+  }));
+
+  console.log(categorySelect);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -76,7 +88,6 @@ const ProductManagementPage: React.FC = () => {
   };
 
   const handleEditProductSubmit = async (data: Tproduct, productId: string) => {
-    console.log(data);
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value as string);
@@ -112,7 +123,15 @@ const ProductManagementPage: React.FC = () => {
       <ECInput name="stock_quantity" label="Stock Quantity" size="sm" />
       <ECInput name="rating" label="Rating" size="sm" />
       <ECTextArea name="description" placeholder="Enter your description" />
-      <ECInput name="category" label="Category" size="sm" />
+      <ECselect
+        label="Category"
+        data={categorySelect}
+        name="category"
+        placeholder="Select a Category"
+        variant="bordered"
+        size="md"
+        required={true}
+      />
       <input
         className="py-2"
         placeholder="Image"
@@ -146,7 +165,15 @@ const ProductManagementPage: React.FC = () => {
       <ECInput name="stock_quantity" label="Stock Quantity" size="sm" />
       <ECInput name="rating" label="Rating" size="sm" />
       <ECTextArea name="description" placeholder="Enter your description" />
-      <ECInput name="category" label="Category" size="sm" />
+      <ECselect
+        label="Category"
+        name="category"
+        data={categorySelect}
+        placeholder="Select a Category"
+        variant="bordered"
+        size="lg"
+        required={true}
+      />
       <input
         className="py-2"
         placeholder="Image"

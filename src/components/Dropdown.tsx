@@ -51,6 +51,11 @@ const Dropdown = () => {
               Product Management
             </div>
           </NextLink>
+          <NextLink passHref href="/admin/category-management">
+            <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer">
+              category Management
+            </div>
+          </NextLink>
         </div>
       )}
     </div>
