@@ -11,7 +11,39 @@ const categoryApi = baseApi.injectEndpoints({
         };
       },
     }),
+    createCategory: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/categories/create-category`,
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    editNameCategory: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: `/categories/update-category`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+    }),
+    deleteCategory: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/categories/delete-category/${data.name}`,
+          method: "DELETE",
+        };
+      },
+    }),
   }),
 });
 
-export const { useAllCategoryQuery } = categoryApi;
+export const {
+  useEditNameCategoryMutation,
+  useAllCategoryQuery,
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoryApi;

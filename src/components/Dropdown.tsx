@@ -33,7 +33,7 @@ const Dropdown = () => {
   return (
     <div className="relative dropdown-container">
       <div
-        className="cursor-pointer"
+        className="cursor-pointer dark:text-gray-700"
         onClick={toggleDropdown} // Toggle dropdown on click
       >
         Management
@@ -42,17 +42,17 @@ const Dropdown = () => {
       {dropdownOpen && (
         <div className="absolute left-0 z-10 w-48 mt-2 bg-white border rounded-md shadow-lg dropdown-content">
           <NextLink passHref href="/admin/user-management">
-            <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer">
+            <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer dark:text-gray-700">
               User Management
             </div>
           </NextLink>
           <NextLink passHref href="/admin/product-management">
-            <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer">
+            <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer dark:text-gray-700">
               Product Management
             </div>
           </NextLink>
           <NextLink passHref href="/admin/category-management">
-            <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer">
+            <div className="px-4 py-3 hover:bg-gray-100 cursor-pointer dark:text-gray-700">
               category Management
             </div>
           </NextLink>

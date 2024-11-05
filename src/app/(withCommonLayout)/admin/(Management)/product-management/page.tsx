@@ -5,6 +5,7 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
+import { FaPlusCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
   Table,
@@ -31,6 +32,7 @@ import ECInput from "@/src/components/form/ECInput";
 import ECTextArea from "@/src/components/form/ECTextArea";
 import ECselect from "@/src/components/form/ECselect";
 import { useAllCategoryQuery } from "@/src/redux/api/categoryApi";
+import ECSelect from "@/src/components/form/ECselect";
 
 const columns = [
   { name: "Image", uid: "image" },
@@ -55,13 +57,10 @@ const ProductManagementPage: React.FC = () => {
 
   const { data: categorydata } = useAllCategoryQuery(undefined);
 
-  console.log(categorydata);
   const categorySelect = categorydata?.data?.map((e) => ({
-    name: e.name,
+    key: e.name,
     label: e.name,
   }));
-
-  console.log(categorySelect);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -123,15 +122,7 @@ const ProductManagementPage: React.FC = () => {
       <ECInput name="stock_quantity" label="Stock Quantity" size="sm" />
       <ECInput name="rating" label="Rating" size="sm" />
       <ECTextArea name="description" placeholder="Enter your description" />
-      <ECselect
-        label="Category"
-        data={categorySelect}
-        name="category"
-        placeholder="Select a Category"
-        variant="bordered"
-        size="md"
-        required={true}
-      />
+      <ECselect label="category" name="category" options={categorySelect} />
       <input
         className="py-2"
         placeholder="Image"
@@ -165,11 +156,10 @@ const ProductManagementPage: React.FC = () => {
       <ECInput name="stock_quantity" label="Stock Quantity" size="sm" />
       <ECInput name="rating" label="Rating" size="sm" />
       <ECTextArea name="description" placeholder="Enter your description" />
-      <ECselect
+      <ECSelect
         label="Category"
         name="category"
-        data={categorySelect}
-        placeholder="Select a Category"
+        options={categorySelect}
         variant="bordered"
         size="lg"
         required={true}
@@ -266,11 +256,17 @@ const ProductManagementPage: React.FC = () => {
     <div>
       <div className="flex justify-between">
         <h1 className="text-xl font-semibold mb-4">Product Management</h1>
+
         <ReusableModal
           title="Create Product"
           content={createModalContent()}
           placement="top"
-          triggerText={<span className="p-3">Create</span>}
+          triggerText={
+            <div className="flex items-center mb-6 text-green-500 cursor-pointer text-lg">
+              <FaPlusCircle className="text-2xl mr-2 trc" />
+              <span>Create New Product</span>
+            </div>
+          }
         />
       </div>
 

@@ -1,30 +1,22 @@
-import React from "react";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/select";
 import { useFormContext } from "react-hook-form";
-interface Tdata {
-  key: string;
-  label: string;
+
+import { IInput } from "@/src/types";
+
+interface IProps extends IInput {
+  options: {
+    key: string;
+    label: string;
+  }[];
 }
 
-interface SelectProps {
-  label: string;
-  name: string;
-  placeholder?: string;
-  variant?: "flat" | "bordered" | "faded" | "underlined";
-  size?: "lg" | "md" | "sm";
-  required?: boolean;
-  data?: Tdata[] | [];
-}
-
-const ECselect = ({
-  label = "Favorite Animal",
-  name = "favoriteAnimal",
-  placeholder = "Select an animal",
+export default function ECSelect({
+  options,
+  name,
+  label,
   variant = "bordered",
-  size = "lg",
-  required = false,
-  data,
-}: SelectProps) => {
+  disabled,
+}: IProps) {
   const {
     register,
     formState: { errors },
@@ -32,19 +24,15 @@ const ECselect = ({
 
   return (
     <Select
-      label={label}
-      placeholder={placeholder}
-      variant={variant}
-      size={size}
-      required={required}
-      errorMessage={errors[name] ? (errors[name].message as string) : ""}
-      isInvalid={!!errors[name]}
-      className="max-w-xs my-1"
       {...register(name)}
+      className="min-w-full sm:min-w-[225px]"
+      isDisabled={disabled}
+      label={label}
+      variant={variant}
     >
-      {data?.map((d) => <SelectItem key={d.key}>{d.label}</SelectItem>)}
+      {options.map((option) => (
+        <SelectItem key={option.key}>{option.label}</SelectItem>
+      ))}
     </Select>
   );
-};
-
-export default ECselect;
+}
