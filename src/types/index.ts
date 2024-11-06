@@ -8,7 +8,7 @@ export type Tproduct = {
   _id: string;
   name: string;
   description: string;
-  category: string;
+  category: { name: string }[] | string;
   brand: string;
   stock_quantity: number;
   rating: number;

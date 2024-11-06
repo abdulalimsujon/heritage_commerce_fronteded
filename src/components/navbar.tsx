@@ -13,17 +13,19 @@ import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
+import { useSelector, useDispatch } from "react-redux";
+import { Button } from "@nextui-org/button";
+
+import { RootState } from "../redux/store";
+import { selectCurrentUser, userLogout } from "../redux/features/Authslice";
 
 import CartBadge from "./badge";
 import Dropdown from "./Dropdown";
 import NavbarInputSearch from "./NavbarInputSearch";
+
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import { Logo } from "@/src/components/icons";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../redux/store";
-import { selectCurrentUser, userLogout } from "../redux/features/Authslice";
-import { Button } from "@nextui-org/button";
 
 export const Navbar = () => {
   const searchInput = <NavbarInputSearch />;
@@ -32,9 +34,9 @@ export const Navbar = () => {
 
   return (
     <NextUINavbar
+      className="px-4 shadow-lg bg-white"
       maxWidth="xl"
       position="sticky"
-      className="px-4 shadow-lg bg-white"
     >
       <NavbarContent className="flex justify-between items-center w-full">
         {/* Navbar Left - Logo and Brand */}
@@ -55,7 +57,7 @@ export const Navbar = () => {
                 <Link
                   className={clsx(
                     linkStyles({ color: "foreground" }),
-                    "data-[active=true]:text-primary data-[active=true]:font-medium text-lg dark:text-gray-700"
+                    "data-[active=true]:text-primary data-[active=true]:font-medium text-lg dark:text-gray-700",
                   )}
                 >
                   {item.label}
@@ -79,8 +81,8 @@ export const Navbar = () => {
           {/* Show Login/Logout button */}
           {user ? (
             <Button
-              size="sm"
               className="bg-green-500"
+              size="sm"
               onClick={() => dispatch(userLogout())}
             >
               Logout

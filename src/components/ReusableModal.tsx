@@ -17,16 +17,15 @@ type ReusableModalProps = {
   title?: string;
   content?: ReactNode;
   footerActions?: ReactNode;
+  buttonClass?: string;
   placement?: "top" | "center" | "bottom" | "auto";
-} & (
-  | { triggerText: string; triggerContent?: never }
-  | { triggerContent: ReactNode; triggerText?: never }
-);
+  triggerText: string | ReactNode;
+  triggerContent?: string | ReactNode;
+};
 
 export default function ReusableModal({
   title = "Default Modal Title",
   content,
-  footerActions,
   placement = "auto",
   triggerText = "Open Modal",
   triggerContent, // Accept custom trigger content

@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   if (!user) {
     // Redirect unauthenticated users to login if accessing other routes
     return NextResponse.redirect(
-      new URL(`/login?redirect=${pathname}`, request.url)
+      new URL(`/login?redirect=${pathname}`, request.url),
     );
   } else {
     // If authenticated, prevent access to auth routes

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-sort-props */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 
@@ -11,8 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/table";
-
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+
 import { DeleteIcon, EditIcon, EyeIcon } from "@/src/components/icons";
 import ReusableModal from "@/src/components/ReusableModal";
 import ECform from "@/src/components/form/ECform";
@@ -22,14 +24,13 @@ import {
   useDeleteUserMutation,
   useUpdateUserMutation,
 } from "@/src/redux/api/user/userApi";
-import { toast } from "react-toastify";
 
 const columns = [
-  { name: "Name", uid: "name", align: "center" },
-  { name: "Mobile", uid: "mobile", align: "center" },
-  { name: "Role", uid: "role", align: "center" },
-  { name: "Status", uid: "status", align: "center" },
-  { name: "Actions", uid: "actions", align: "center" },
+  { name: "Name", uid: "name", align: "center" as const },
+  { name: "Mobile", uid: "mobile", align: "center" as const },
+  { name: "Role", uid: "role", align: "center" as const },
+  { name: "Status", uid: "status", align: "center" as const },
+  { name: "Actions", uid: "actions", align: "center" as const },
 ];
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -58,6 +59,7 @@ const UserManagementPage = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
       setImageFile(file);
     }
@@ -196,7 +198,7 @@ const UserManagementPage = () => {
           return <p className="text-center">{cellValue}</p>;
       }
     },
-    [handleSubmit, defaultValues]
+    [handleSubmit, defaultValues],
   );
 
   const users =
@@ -219,8 +221,8 @@ const UserManagementPage = () => {
           </TableColumn>
         ))}
       </TableHeader>
-      <TableBody<User> itemKey="_id" items={users}>
-        {(item) => (
+      <TableBody items={users}>
+        {(item: User) => (
           <TableRow key={item._id}>
             {(columnKey) => (
               <TableCell className="px-4 py-2 text-center">

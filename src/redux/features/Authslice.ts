@@ -1,6 +1,8 @@
-import { Tuser } from "@/src/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { RootState } from "../store";
+
+import { Tuser } from "@/src/types";
 
 type InitialStateProps = {
   user: Tuser | null;
@@ -22,6 +24,7 @@ const AuthSlice = createSlice({
     },
   },
 });
+
 export const selectCurrentUser = (state: RootState) => state.auth.user;
 export const { setUser, userLogout } = AuthSlice.actions;
 

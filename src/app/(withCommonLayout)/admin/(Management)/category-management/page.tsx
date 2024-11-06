@@ -1,13 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 
-import {
-  useAllCategoryQuery,
-  useCreateCategoryMutation,
-  useDeleteCategoryMutation,
-  useEditNameCategoryMutation,
-} from "@/src/redux/api/categoryApi";
 import {
   Table,
   TableHeader,
@@ -20,6 +14,14 @@ import { FaEdit, FaTrashAlt, FaPlusCircle } from "react-icons/fa";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
+import {
+  useAllCategoryQuery,
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+  useEditNameCategoryMutation,
+} from "@/src/redux/api/categoryApi";
+import { Tproduct } from "@/src/types";
+
 const CategoryPage = () => {
   const { data, refetch } = useAllCategoryQuery(undefined);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -28,24 +30,26 @@ const CategoryPage = () => {
   const [editNameCategory] = useEditNameCategoryMutation();
   const [newCategory, setNewCategory] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState(null);
-  const [editCategory, setEditCategory] = useState(null); // Track the category being edited
+  const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null); // Changed to handle string | null
+  const [editCategory, setEditCategory] = useState<string | null>(null); // Changed to handle string | null
   const [updatedCategoryName, setUpdatedCategoryName] = useState(""); // New name for the edited category
 
-  const productData = data?.data?.map((d) => ({
+  const productData = data?.data?.map((d: { name: any; products: any }) => ({
     name: d.name,
     products: d.products || [],
   }));
 
   const handleDelete = async () => {
-    await deleteCategory({ name: categoryToDelete });
-    toast.success("Category Successfully Deleted");
-    setShowDeleteModal(false);
-    refetch();
+    if (categoryToDelete) {
+      await deleteCategory({ name: categoryToDelete });
+      toast.success("Category Successfully Deleted");
+      setShowDeleteModal(false);
+      refetch();
+    }
   };
 
-  const openDeleteModal = (categoryName) => {
-    setCategoryToDelete(categoryName);
+  const openDeleteModal = (categoryName: string) => {
+    setCategoryToDelete(categoryName); // Set category name to delete
     setShowDeleteModal(true);
   };
 
@@ -57,9 +61,9 @@ const CategoryPage = () => {
     refetch();
   };
 
-  const openEditForm = (categoryName) => {
-    setEditCategory(categoryName); // Set the category to be edited
-    setUpdatedCategoryName(categoryName); // Set the initial input value
+  const openEditForm = (categoryName: string) => {
+    setEditCategory(categoryName); // Set category name to edit
+    setUpdatedCategoryName(categoryName); // Set name in the input for update
   };
 
   const handleUpdate = async () => {
@@ -93,15 +97,15 @@ const CategoryPage = () => {
       {showCreateForm && (
         <div className="mb-4 p-4 bg-gray-100 rounded-md shadow-md">
           <input
-            type="text"
+            className="p-2 border border-gray-300 rounded-md mr-2 focus:outline-none focus:border-green-500"
             placeholder="Enter category name"
+            type="text"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
-            className="p-2 border border-gray-300 rounded-md mr-2 focus:outline-none focus:border-green-500"
           />
           <button
-            onClick={handleCreate}
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            onClick={handleCreate}
           >
             Add Category
           </button>
@@ -124,21 +128,39 @@ const CategoryPage = () => {
           </TableColumn>
         </TableHeader>
         <TableBody>
-          {productData?.map((category) => (
+          {productData?.map((category: Tproduct) => (
             <TableRow key={category.name} className="border-t border-gray-300">
               <TableCell className="text-center font-semibold text-gray-700 py-4">
                 {category.name}
               </TableCell>
               <TableCell className="text-center text-gray-600 flex flex-wrap justify-center">
                 {category.products.length > 0 ? (
-                  category.products.map((product, index) => (
-                    <span
-                      key={index}
-                      className="p-2 m-1 border border-gray-300 rounded"
-                    >
-                      {product}
-                    </span>
-                  ))
+                  category.products.map(
+                    (
+                      product:
+                        | string
+                        | number
+                        | bigint
+                        | boolean
+                        | React.ReactElement<
+                            any,
+                            string | React.JSXElementConstructor<any>
+                          >
+                        | Iterable<React.ReactNode>
+                        | React.ReactPortal
+                        | Promise<React.AwaitedReactNode>
+                        | null
+                        | undefined,
+                      index: React.Key | null | undefined
+                    ) => (
+                      <span
+                        key={index}
+                        className="p-2 m-1 border border-gray-300 rounded"
+                      >
+                        {product}
+                      </span>
+                    )
+                  )
                 ) : (
                   <span className="text-gray-500">No products available</span>
                 )}
@@ -146,14 +168,14 @@ const CategoryPage = () => {
               <TableCell className="text-center py-4">
                 <div className="flex justify-center">
                   <FaEdit
-                    onClick={() => openEditForm(category.name)}
-                    className="cursor-pointer text-blue-600 text-lg mr-4"
+                    className="cursor-pointer text-green-500 text-lg mr-4"
                     title="Edit Category"
+                    onClick={() => openEditForm(category.name)}
                   />
                   <FaTrashAlt
-                    onClick={() => openDeleteModal(category.name)}
                     className="cursor-pointer text-red-600 text-lg"
                     title="Delete Category"
+                    onClick={() => openDeleteModal(category.name)}
                   />
                 </div>
               </TableCell>
@@ -168,49 +190,48 @@ const CategoryPage = () => {
           <div className="bg-white p-6 rounded-md shadow-md">
             <h2 className="text-lg font-semibold mb-4">Edit Category</h2>
             <input
+              className="p-2 border border-gray-300 rounded-md w-full mb-4 focus:outline-none focus:border-green-500"
               type="text"
               value={updatedCategoryName}
               onChange={(e) => setUpdatedCategoryName(e.target.value)}
-              className="p-2 border border-gray-300 rounded-md w-full mb-4 focus:outline-none focus:border-green-500"
             />
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-between">
               <button
-                onClick={() => setEditCategory(null)}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2"
-              >
-                Cancel
-              </button>
-              <button
+                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                 onClick={handleUpdate}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
               >
                 Update
+              </button>
+              <button
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+                onClick={() => setEditCategory(null)}
+              >
+                Cancel
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
+      {/* Delete Category Modal */}
+      {showDeleteModal && categoryToDelete && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-md shadow-md">
-            <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
-            <p>
-              Are you sure you want to delete the category: {categoryToDelete}?
-            </p>
-            <div className="mt-6 flex justify-end">
+            <h2 className="text-lg font-semibold mb-4">
+              Are you sure you want to delete "{categoryToDelete}"?
+            </h2>
+            <div className="flex justify-between">
               <button
-                onClick={() => setShowDeleteModal(false)}
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2"
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                onClick={handleDelete}
               >
-                Cancel
+                Yes, Delete
               </button>
               <button
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+                onClick={() => setShowDeleteModal(false)}
               >
-                Delete
+                Cancel
               </button>
             </div>
           </div>

@@ -23,6 +23,7 @@ const categoryApi = baseApi.injectEndpoints({
     editNameCategory: builder.mutation({
       query: (data) => {
         console.log(data);
+
         return {
           url: `/categories/update-category`,
           method: "PATCH",

@@ -13,19 +13,27 @@ import {
 } from "@/src/redux/features/FilterSlice";
 import { useGetAllProduct } from "@/src/app/hooks/allProduct.hook";
 import { Tproduct } from "@/src/types";
+import { useAllCategoryQuery } from "@/src/redux/api/categoryApi";
+type dropDownProps = {
+  key: string;
+  label: string;
+};
+
+type categoryProps = {
+  name: string;
+  _id: string;
+  products: string[];
+};
 
 const CategoryDropdown = () => {
   const dispatch = useDispatch();
-  const { data } = useGetAllProduct();
+  const { data, isLoading: dataloading } = useGetAllProduct();
+  const { data: categoryData, isLoading: categoryLoading } =
+    useAllCategoryQuery(undefined);
 
-  // Extract categories and brands
-  const categories = Array.from(
-    new Set(
-      data?.data?.result?.map((p: Tproduct) => p.category).filter(Boolean),
-    ),
-  ).map((category) => ({
-    key: category,
-    label: category,
+  const categoryItems = categoryData?.data?.map((cate: categoryProps) => ({
+    key: cate._id,
+    label: cate.name,
   }));
 
   const brands = Array.from(
@@ -44,6 +52,10 @@ const CategoryDropdown = () => {
     dispatch(setBrand(value));
   };
 
+  if (categoryLoading || dataloading) {
+    return <h1>laoding...</h1>;
+  }
+
   return (
     <div className="pr-5">
       <div className="">
@@ -60,7 +72,7 @@ const CategoryDropdown = () => {
             variant="bordered"
             onChange={(e) => handleCategoryChange(e.target.value)}
           >
-            {categories.map((category) => (
+            {categoryItems.map((category: dropDownProps) => (
               <SelectItem
                 key={category.key as string}
                 value={category.key as string}

@@ -1,7 +1,7 @@
 import "@/src/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { Providers } from "../lib/Providers";
@@ -40,7 +40,7 @@ export default function RootLayout({
       <body
         className={clsx(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

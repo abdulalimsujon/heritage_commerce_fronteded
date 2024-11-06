@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "@/src/redux/store";
 import { useCreatePaymentIntentMutation } from "@/src/redux/api/gateway/gatewayApi";
+import { toast } from "react-toastify";
 // Adjust path as needed
 
 const stripePromise = loadStripe(
@@ -55,7 +56,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ grandTotalAmount }) => {
         price: Number(formData.amount),
       }).unwrap();
 
-      console.log("Payment intent response:", response);
+      if (response.object.clientSecret) {
+        toast.success("payment is successfull");
+      }
       // Add further handling for the payment response here if needed
     } catch (error) {
       console.error("Payment failed:", error);
