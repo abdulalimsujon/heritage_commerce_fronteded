@@ -43,9 +43,10 @@ const columns = [
 const ProductManagementPage: React.FC = () => {
   const { data, isLoading, error, refetch } =
     useAllProductFromDbQuery(undefined);
-  const items: Tproduct[] = data || []; // Set items to data if available, or an empty array if not
+  const items: Tproduct[] = data?.data?.result || []; // Set items to data if available, or an empty array if not
 
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [createProduct, { isLoading: addLoading }] = useCreateProductMutation();
   const [deleteProduct, { isLoading: deleteLoading }] =
     useDeleteProductMutation();
@@ -246,23 +247,19 @@ const ProductManagementPage: React.FC = () => {
 
   return (
     <>
-      <div className="w-full flex justify-end">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-semibold mb-4">Product Page</h1>
         <ReusableModal
           buttonClass="flex items-center gap-2"
           content={createModalContent()}
           title="Create Product"
-          triggerText={
-            <Button isIconOnly radius="full" variant="flat">
-              <FaPlusCircle size="1.5em" />
-            </Button>
-          }
+          triggerText={<div className="text-green-500">Create New Product</div>}
         />
       </div>
 
       <div className="my-4">
         <Table
           aria-label="Product Management Table"
-          selectionMode="multiple"
           isStriped
           className="overflow-x-auto"
         >
